@@ -1,4 +1,5 @@
 
+```bash
 Estrutura dos arquivos do Chatbot
 
 chatbot/
@@ -6,3 +7,4 @@ chatbot/
 ├── chatbot_logic.py         # coleta de dados, chamada API
 ├── data/usuarios.csv        # base simples de usuários
 ├── README.md
+```

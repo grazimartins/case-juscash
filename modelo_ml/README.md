@@ -1,3 +1,5 @@
+
+```bash
 Estrutura de arquivos para o Modelo de Machine Learning
 
 modelo_ml/
@@ -6,3 +8,5 @@ modelo_ml/
 ├── model.pkl
 ├── data/projetos.csv
 ├── README.md
+
+```
