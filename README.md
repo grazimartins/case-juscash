@@ -8,7 +8,7 @@ Este repositório apresenta uma solução completa para previsão de sucesso de 
 
 ```bash
 chatbot_projeto_sucesso/
-├── modelo_ml/     # Código, scripts e dados do modelo de machine learning
+├── modelo/        # Código, scripts e dados do modelo de machine learning
 ├── chatbot/       # Código do chatbot e integração com a API
 ```
 
@@ -16,7 +16,7 @@ chatbot_projeto_sucesso/
 
 O projeto é composto por dois principais módulos:
 
-- **modelo_ml/**: Pipeline de modelagem em Python, scripts de treinamento e avaliação, dados históricos e modelo final salvo (Random Forest). O código é organizado, reprodutível e documentado, com métricas como F1-score, recall e acurácia reportadas e justificadas.
+- **modelo/**: Pipeline de modelagem em Python, scripts de treinamento e avaliação, dados históricos e modelo final salvo (Random Forest). O código é organizado, reprodutível e documentado, com métricas como F1-score, recall e acurácia reportadas e justificadas.
 - **chatbot/**: Chatbot em Streamlit, responsável por coletar dados do usuário/projeto e consultar a API de predição (FastAPI). O sistema utiliza uma base de usuários para personalizar as respostas, sendo modular e de fácil adaptação.
 
 ## Como Executar
