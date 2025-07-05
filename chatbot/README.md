@@ -1,25 +1,34 @@
 
-# Chatbot - Previsão de Sucesso de Projetos
 
-Este chatbot coleta informações sobre um novo projeto e consulta uma API de Machine Learning para prever a chance de sucesso, com base também no histórico do usuário.
+# Chatbot para Previsão de Sucesso de Projetos
 
-## Como usar
+Este diretório contém o chatbot desenvolvido para coletar informações de novos projetos e consultar uma API de Machine Learning (implementada em FastAPI), prevendo a chance de sucesso com base no histórico do usuário.
 
-1. Estrutura dos arquivos do Chatbot
-```bash
-chatbot/
-├── chatbot_app.py           # app Streamlit
-├── chatbot_logic.py         # coleta de dados, chamada API
-├── data/usuarios.csv        # base simples de usuários
-├── README.md
-```
+## Estrutura do Diretório
 
-2. Instale as dependências:
+- `chatbot_app.py`: Aplicação principal em Streamlit.
+- `chatbot_logic.py`: Lógica de coleta de dados e integração com a API de predição (FastAPI).
+- `data/usuarios.csv`: Base de usuários para simulação e personalização.
+
+## Como Executar
+
+1. Instale as dependências necessárias:
 ```bash
 pip install streamlit pandas requests
 ```
 
-3. Execute o chatbot:
+2. Execute o chatbot:
 ```bash
 streamlit run chatbot_app.py
 ```
+
+---
+## Funcionamento
+
+O chatbot solicita dados do projeto e do usuário, envia as informações para a API de Machine Learning e exibe a previsão de sucesso de forma interativa e amigável. O histórico do usuário pode ser utilizado para personalizar a resposta.
+
+---
+## Observações
+
+- Certifique-se de que a API de predição (FastAPI) esteja em execução para o chatbot funcionar corretamente.
+- O fluxo pode ser adaptado para integração com diferentes modelos ou bases de usuários.
