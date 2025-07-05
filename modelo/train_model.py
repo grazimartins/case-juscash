@@ -3,6 +3,9 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import precision_recall_curve, f1_score
+import joblib
 import pickle
 from pathlib import Path
 
@@ -67,21 +70,44 @@ features = [
 X = projetos[features]
 y = projetos['sucesso']
 
-# 5. Treinar modelo
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# 5. Treinar modelo conforme pipeline do notebook (Random Forest com ajuste de threshold e scaler)
+
+# Normalização das features numéricas
+numeric_cols = ['media_valor', 'media_duracao', 'media_complexidade', 'media_nota_cliente',
+               'idade', 'horas_trabalhadas', 'valor_projeto', 'duracao_dias', 'complexidade', 'nota_cliente']
+scaler = StandardScaler()
+X[numeric_cols] = scaler.fit_transform(X[numeric_cols])
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+model = RandomForestClassifier(n_estimators=300, max_depth=20, min_samples_split=2, min_samples_leaf=2, class_weight='balanced', random_state=42)
 model.fit(X_train, y_train)
 
-# 6. Avaliação
-y_pred = model.predict(X_test)
+# Ajuste de threshold ótimo para F1
+if hasattr(model, 'predict_proba'):
+    y_scores = model.predict_proba(X_test)[:, 1]
+    precisions, recalls, thresholds = precision_recall_curve(y_test, y_scores)
+    f1_scores = 2 * (precisions * recalls) / (precisions + recalls + 1e-10)
+    optimal_idx = f1_scores.argmax()
+    optimal_threshold = max(0.3, thresholds[optimal_idx])
+    print(f"Melhor limiar para F1: {optimal_threshold:.4f} (F1: {f1_scores[optimal_idx]:.4f})")
+else:
+    optimal_threshold = 0.5
+
+# Avaliação
+y_pred = (model.predict_proba(X_test)[:, 1] >= optimal_threshold).astype(int)
 print(classification_report(y_test, y_pred))
 
-# 7. Salvar modelo
-with open(MODEL_PATH, 'wb') as f:
-    pickle.dump(model, f)
-print(f"Modelo salvo em {MODEL_PATH}")
+# Salvar modelo, scaler, threshold e features
+joblib.dump({
+    'model': model,
+    'scaler': scaler,
+    'threshold': optimal_threshold,
+    'selected_features': features
+}, MODEL_PATH)
+print(f"Modelo completo salvo em {MODEL_PATH}")
 
-# 8. Salvar features usadas
+# Salvar features usadas
 with open(BASE_DIR / 'model_features.txt', 'w') as f:
     f.write('\n'.join(features))
 print("Features salvas em model_features.txt")

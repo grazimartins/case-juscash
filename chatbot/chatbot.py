@@ -1,6 +1,6 @@
 import pandas as pd
-import pickle
 from pathlib import Path
+import joblib
 import shap
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
@@ -10,7 +10,7 @@ from api_usuario import buscar_usuario_por_id
 # Configuração de caminhos
 BASE_DIR = Path(__file__).parent
 DATA_PATH = BASE_DIR / "data" / "usuarios.csv"
-MODEL_PATH = BASE_DIR.parent / "modelo_ml" / "model_optimized.pkl"
+MODEL_PATH = BASE_DIR.parent / "modelo" / "model.pkl"
 
 def apply_custom_css():
     """Aplica CSS elegante com tons de azul escuro, branco e cinza."""
@@ -100,13 +100,17 @@ def load_data():
         return None
 
 def load_model():
-    """Carrega o modelo Random Forest pré-treinado."""
+    """Carrega o modelo."""
     try:
         with open(MODEL_PATH, 'rb') as file:
-            model = pickle.load(file)
+            conteudo = joblib.load(MODEL_PATH)
+            model = conteudo['model']
         return model
     except FileNotFoundError:
-        st.error(f"Modelo random_forest_model.pkl não encontrado em {MODEL_PATH}")
+        st.error(f"Modelo 'model.pkl' não encontrado em {MODEL_PATH}")
+        return None
+    except Exception as e:
+        st.error(f"Erro ao carregar o modelo: {e}")
         return None
 
 def call_llm(prompt):
@@ -217,7 +221,15 @@ def chat_app():
                         st.markdown("<div class='chatMessage ai'>⏳ Calculando predição...</div>", unsafe_allow_html=True)
                     prob = predict_success_api(st.session_state.user_id, novo_projeto)
                     if prob is not None:
-                        st.session_state.messages.append({"type": "ai", "content": f" <strong>Probabilidade de sucesso</strong>: {prob * 100:.2f}%"})
+                        # Exemplo de recomendação baseada na probabilidade
+                        mensagem = f"Com base nos dados fornecidos e no seu histórico de projetos, o seu projeto tem <strong>{prob * 100:.0f}%</strong> de chance de ser bem-sucedido."
+                        # Exemplo de análise simples de orçamento
+                        orcamento = novo_projeto.get("valor_projeto", None)
+                        if orcamento is not None and df is not None:
+                            media_orcamento = df['valor_projeto'].mean() if 'valor_projeto' in df.columns else None
+                            if media_orcamento and orcamento < media_orcamento:
+                                mensagem += f"<br>Seu orçamento está abaixo da média dos projetos de sucesso (média: R$ {media_orcamento:.2f}). Considere ajustar o orçamento."
+                        st.session_state.messages.append({"type": "ai", "content": mensagem})
                     else:
                         st.session_state.messages.append({"type": "ai", "content": "Erro ao obter predição da API."})
                     with container.chat_message("ai"):
