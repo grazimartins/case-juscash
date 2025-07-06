@@ -8,7 +8,7 @@ from api_usuario import buscar_usuario_por_id
 # ===== CAMINHOS =====
 BASE_DIR = Path(__file__).parent
 DATA_PATH = BASE_DIR / "data" / "usuarios.csv"
-MODEL_PATH = BASE_DIR.parent / "modelo" / "model.pkl"
+MODEL_PATH = BASE_DIR.parent / "modelo" / "artifacts"/  "model.pkl"
 
 # ===== CSS =====
 def apply_custom_css():

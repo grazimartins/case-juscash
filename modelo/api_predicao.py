@@ -16,7 +16,7 @@ app = FastAPI()
 
 def carregar_modelo():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(base_dir, "model.pkl")
+    model_path = os.path.join(base_dir, "artifacts/model.pkl")
     model_data = joblib.load(model_path)
     return model_data
 
