@@ -1,67 +1,76 @@
-# Modelagem de Machine Learning para Previsão de Sucesso de Projetos
+# ⚙️ Modelagem de Machine Learning para Previsão de Sucesso de Projetos
 
-Este diretório contém os scripts, modelos, testes automatizados e dados históricos utilizados para o desenvolvimento, validação e entrega da solução de machine learning do case técnico.
+Este diretório contém os scripts, modelos, testes automatizados e dados históricos utilizados para o desenvolvimento, validação e entrega da solução de machine learning proposta no case técnico.
 
-## 📁 Estrutura do Diretório
+## 🔷 Estrutura do Diretório
 
-- `train_model.py`: Script principal de treinamento do modelo, engenharia de features, validação cruzada e ajuste de threshold.
-- `api_predicao.py`: API FastAPI que expõe o modelo para predição.
-- `tests/`: Testes unitários para o pipeline de modelagem e testes automatizados para a API.
-- `data/`: Contém o arquivo `historico_projetos.csv` usado no treinamento e nas predições.
-- `artifacts/` (separado ou implícito): Contém artefatos gerados, como o modelo `.pkl`, imagens SHAP etc.
-- `notebooks/`: (opcional) Notebooks utilizados para exploração, validação e prototipagem.
+- `train_model.py`: Script principal de treinamento, engenharia de features, validação cruzada, interpretabilidade (SHAP) e salvamento do modelo.
+- `api_predicao.py`: API FastAPI para realizar predições com o modelo treinado.
+- `test_train_model.py`: Testes unitários para o pipeline de machine learning.
+- `test_api_predicao.py`: Testes automatizados para a API REST.
+- `data/`: Contém a base `historico_projetos.csv` utilizada no treinamento e validação.
+- `artifacts/`: Inclui artefatos gerados, como modelo serializado (`.pkl`), imagens SHAP e features salvas.
+- `notebooks/`: (opcional) Notebooks utilizados para exploração de dados e prototipação.
+- `requirements.txt`: Lista de dependências necessárias para rodar a aplicação.
+- `requirements-dev.txt`: Dependências adicionais para testes e desenvolvimento.
 
 
+## ⚙️ Execução Local
 
-## 🚀 Como Executar
-
-1. Instale as dependências:
+1. Instale as dependências principais:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Treine o modelo:
+2. Para desenvolvimento e testes, instale também:
+```bash
+pip install -r requirements-dev.txt
+```
+
+3. Treine o modelo:
 ```bash
 python train_model.py
 ```
 
-3. (Opcional) Rode os testes:
+4. Rode os testes:
 ```bash
 pytest -v
 ```
 
-4. Execute a API para predições:
+5. Execute a API:
 ```bash
 uvicorn api_predicao:app --reload
 ```
 
-## Testes Automatizados
+## 🔹 Testes Automatizados
 
-Estão incluídos testes para:
-- Carregamento do modelo e estrutura do pipeline
-- Predição correta com threshold
-- Cobertura da API FastAPI para `/predict` com payloads válidos e inválidos
+Os testes cobrem:
+- Estrutura e carregamento do modelo (`train_model.py`)
+- Predição com limiar ajustado
+- API REST: respostas com payloads válidos e inválidos
 
-Cobertura de testes via `pytest-cov` disponível com:
+Para gerar relatório de cobertura:
 ```bash
 pytest --cov=modelo --cov-report=term --cov-report=html
 ```
 
-## Escolha e Desempenho do Modelo
+## 🔵 Modelo Final Selecionado
 
-Foram avaliados Regressão Logística, Random Forest, XGBoost e CatBoost. O modelo final escolhido foi:
+Modelos avaliados: Regressão Logística, Random Forest, XGBoost e CatBoost. O escolhido foi:
 
 - **Modelo:** Random Forest Classifier
 - **F1-Score (validação cruzada):** 0.9046
 - **F1-Score (teste):** 0.7315
 - **Recall:** 0.779
 - **Threshold ajustado:** 0.3000
-- **F1 ajustado real:** 0.8097
+- **F1 com threshold ajustado:** 0.8097
 
-O Random Forest foi selecionado por seu desempenho consistente, interpretabilidade via importância de features e compatibilidade com produção e auditoria.
+Critérios de escolha: desempenho robusto, interpretabilidade, estabilidade e compatibilidade com produção.
 
-A interpretabilidade foi complementada com gráficos SHAP salvos automaticamente durante o treinamento (`shap_summary_bar.png`, `shap_summary_beeswarm.png`).
+Interpretabilidade via gráficos SHAP:
+- `shap_summary_bar.png`
+- `shap_summary_beeswarm.png`
 
 ---
 
-Para mais detalhes, consulte os notebooks ou os testes incluídos neste diretório.
+Para detalhes adicionais, consulte os notebooks ou os scripts contidos neste diretório.

@@ -1,0 +1,11 @@
+# requirements.txt (produção)
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+xgboost
+catboost
+joblib
+matplotlib
+seaborn
