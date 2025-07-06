@@ -6,8 +6,7 @@ Este diretório contém os scripts, modelos, testes automatizados e dados histó
 
 - `train_model.py`: Script principal de treinamento, engenharia de features, validação cruzada, interpretabilidade (SHAP) e salvamento do modelo.
 - `api_predicao.py`: API FastAPI para realizar predições com o modelo treinado.
-- `test_train_model.py`: Testes unitários para o pipeline de machine learning.
-- `test_api_predicao.py`: Testes automatizados para a API REST.
+- `tests/`: Testes unitários para o pipeline de machine learning e testes automatizados para a API REST.
 - `data/`: Contém a base `historico_projetos.csv` utilizada no treinamento e validação.
 - `artifacts/`: Inclui artefatos gerados, como modelo serializado (`.pkl`), imagens SHAP e features salvas.
 - `notebooks/`: (opcional) Notebooks utilizados para exploração de dados e prototipação.

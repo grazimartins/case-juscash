@@ -4,8 +4,7 @@ Este diretório contém o chatbot desenvolvido para coletar informações de nov
 
 ## 🔷 Estrutura do Diretório
 
-- `chatbot_app.py`: Aplicação principal em Streamlit.
-- `chatbot_logic.py`: Lógica de coleta de dados e integração com a API de predição (FastAPI).
+- `chatbot.py`: Aplicação principal em Streamlit.
 - `data/usuarios.csv`: Base de usuários para simulação e personalização.
 
 ## ⚙️ Como Executar
