@@ -87,3 +87,5 @@ venv.bak/
 # System files
 .DS_Store
 Thumbs.db
+
+catboost_info/

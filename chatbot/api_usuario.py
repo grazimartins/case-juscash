@@ -1,3 +1,7 @@
+from fastapi import FastAPI, HTTPException
+import pandas as pd
+import os
+
 def buscar_usuario_por_id(user_id: int):
     """Função utilitária para buscar usuário por ID, para uso interno do chatbot."""
     import pandas as pd
@@ -16,9 +20,7 @@ def buscar_usuario_por_id(user_id: int):
         "horas_trabalhadas": 40,
         "nivel_experiencia": min(int(row["anos_experiencia"] // 5 + 1), 5)
     }
-from fastapi import FastAPI, HTTPException
-import pandas as pd
-import os
+
 
 app = FastAPI()
 

@@ -1,46 +1,67 @@
 # Modelagem de Machine Learning para Previsão de Sucesso de Projetos
 
-Este diretório contém os scripts, modelos e dados históricos utilizados para o desenvolvimento, treinamento e avaliação do modelo de machine learning do case técnico.
+Este diretório contém os scripts, modelos, testes automatizados e dados históricos utilizados para o desenvolvimento, validação e entrega da solução de machine learning do case técnico.
 
-## Estrutura do Diretório
+## 📁 Estrutura do Diretório
 
-- `train_model.py`: Script principal de treinamento do modelo.
-- `evaluate_model.py`: Script para avaliação do modelo (opcional).
-- `model.pkl`: Modelo treinado salvo (Random Forest).
-- `data/`: Base histórica de projetos (`historico_projetos.csv`) utilizada para treinamento e validação.
-- `notebooks/`: Notebooks de EDA e modelagem.
+- `train_model.py`: Script principal de treinamento do modelo, engenharia de features, validação cruzada e ajuste de threshold.
+- `api_predicao.py`: API FastAPI que expõe o modelo para predição.
+- `tests/`: Testes unitários para o pipeline de modelagem e testes automatizados para a API.
+- `data/`: Contém o arquivo `historico_projetos.csv` usado no treinamento e nas predições.
+- `artifacts/` (separado ou implícito): Contém artefatos gerados, como o modelo `.pkl`, imagens SHAP etc.
+- `notebooks/`: (opcional) Notebooks utilizados para exploração, validação e prototipagem.
 
-## Como Executar
 
-1. Instale as dependências necessárias:
+
+## 🚀 Como Executar
+
+1. Instale as dependências:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Execute o treinamento do modelo:
+2. Treine o modelo:
 ```bash
 python train_model.py
 ```
 
-3. (Opcional) Avalie o modelo:
+3. (Opcional) Rode os testes:
 ```bash
-python evaluate_model.py
+pytest -v
 ```
 
-4. Utilize os notebooks para análise exploratória e experimentação:
-  - `notebooks/eda.ipynb`: Análise exploratória dos dados
-  - `notebooks/modelagem.ipynb`: Pipeline de modelagem e validação
+4. Execute a API para predições:
+```bash
+uvicorn api_predicao:app --reload
+```
 
----
+## Testes Automatizados
+
+Estão incluídos testes para:
+- Carregamento do modelo e estrutura do pipeline
+- Predição correta com threshold
+- Cobertura da API FastAPI para `/predict` com payloads válidos e inválidos
+
+Cobertura de testes via `pytest-cov` disponível com:
+```bash
+pytest --cov=modelo --cov-report=term --cov-report=html
+```
+
 ## Escolha e Desempenho do Modelo
 
-Foram avaliados modelos como Regressão Logística, Random Forest, XGBoost e CatBoost. O modelo final escolhido foi o Random Forest, considerando desempenho, robustez e interpretabilidade.
+Foram avaliados Regressão Logística, Random Forest, XGBoost e CatBoost. O modelo final escolhido foi:
 
-- **F1-Score médio em validação cruzada: 0.9046**
-- **F1-Score real no teste: 0.7315**
-- **Recall: 0.779**
-- **Threshold ajustado automaticamente para 0.3000**, maximizando o F1-score real para **0.8097**
+- **Modelo:** Random Forest Classifier
+- **F1-Score (validação cruzada):** 0.9046
+- **F1-Score (teste):** 0.7315
+- **Recall:** 0.779
+- **Threshold ajustado:** 0.3000
+- **F1 ajustado real:** 0.8097
 
-O Random Forest se destacou por sua simplicidade, robustez e melhor explicação das features, sendo adequado para ambientes reais que exigem rastreabilidade e auditabilidade.
+O Random Forest foi selecionado por seu desempenho consistente, interpretabilidade via importância de features e compatibilidade com produção e auditoria.
 
-A análise de erros confirmou que o modelo aprende padrões relevantes, mesmo em regiões de maior ambiguidade dos dados.
+A interpretabilidade foi complementada com gráficos SHAP salvos automaticamente durante o treinamento (`shap_summary_bar.png`, `shap_summary_beeswarm.png`).
+
+---
+
+Para mais detalhes, consulte os notebooks ou os testes incluídos neste diretório.
